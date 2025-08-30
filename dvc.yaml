@@ -1,6 +1,6 @@
 stages:
   get_data:
-    cmd: -- python src/data/get_data.py --url 
+    cmd:  python src/data/get_data.py --url 
       https://datascientest-mlops.s3.eu-west-1.amazonaws.com/mlops_dvc_fr/raw.csv
       --out data/raw/raw.csv
     deps:
@@ -8,7 +8,7 @@ stages:
     outs:
     - data/raw/raw.csv
   split:
-    cmd: -- python src/data/split_data.py --input data/raw/raw.csv --out_dir 
+    cmd:  python src/data/split_data.py --input data/raw/raw.csv --out_dir 
       data/processed
     deps:
     - data/raw/raw.csv
@@ -19,7 +19,7 @@ stages:
     - data/processed/y_test.csv
     - data/processed/y_train.csv
   scale:
-    cmd: -- python src/data/scale_data.py --in_dir data/processed --out_dir 
+    cmd:  python src/data/scale_data.py --in_dir data/processed --out_dir 
       data/processed --scaler_out models/scaler.pkl
     deps:
     - data/processed/X_test.csv
@@ -30,7 +30,7 @@ stages:
     - data/processed/X_train_scaled.csv
     - models/scaler.pkl
   tune:
-    cmd: -- python src/models/tune_model.py --X_train 
+    cmd:  python src/models/tune_model.py --X_train 
       data/processed/X_train_scaled.csv --y_train data/processed/y_train.csv 
       --out_params models/best_params.pkl --out_cv models/cv_results.csv
     deps:
@@ -41,7 +41,7 @@ stages:
     - models/best_params.pkl
     - models/cv_results.csv
   train:
-    cmd: -- python src/models/train_model.py --X_train 
+    cmd:  python src/models/train_model.py --X_train 
       data/processed/X_train_scaled.csv --y_train data/processed/y_train.csv 
       --params models/best_params.pkl --out_model models/model.pkl
     deps:
@@ -52,7 +52,7 @@ stages:
     outs:
     - models/model.pkl
   evaluate:
-    cmd: -- python src/models/evaluate_model.py --X_test 
+    cmd:  python src/models/evaluate_model.py --X_test 
       data/processed/X_test_scaled.csv --y_test data/processed/y_test.csv 
       --model models/model.pkl --out_predictions data/predictions.csv 
       --out_metrics metrics/scores.json
